@@ -3,15 +3,19 @@ freebsd_instance:
 
 first_task:
   use_compute_credits: $CIRRUS_USER_COLLABORATOR == 'true'
-  files_cache:
-    folder: files
+  files_artifacts:
+    path: "files/*"
   foo_script:
     - mkdir files
     - echo foobar > files/foo
+    - echo froofroo > files/bar
 second_task:
   use_compute_credits: $CIRRUS_USER_COLLABORATOR == 'true'
-  files_cache:
-    folder: files
   depends_on:
     - first
-  foo2_script: cat files/foo
+  foo2_script:
+    - pkg install -y wget
+    - wget https://api.cirrus-ci.com/v1/artifact/build/${CIRRUS_BUILD_ID}>/files.zip
+    - unzip files.zip
+    - ls -l
+    - cat files/foo
