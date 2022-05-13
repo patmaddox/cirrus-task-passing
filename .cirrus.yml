@@ -6,16 +6,19 @@ first_task:
   files_artifacts:
     path: "files/*"
   foo_script:
+    - pkg install -y curl
     - mkdir files
     - echo foobar > files/foo
     - echo froofroo > files/bar
+    - tar -czf files.txz files
+    - curl -s -X POST --data-binary @files.txz http://${CIRRUS_HTTP_CACHE_HOST}/files.txz
 second_task:
   use_compute_credits: $CIRRUS_USER_COLLABORATOR == 'true'
   depends_on:
     - first
   foo2_script:
-    - pkg install -y wget
-    - wget https://api.cirrus-ci.com/v1/artifact/build/${CIRRUS_BUILD_ID}>/files.zip
-    - unzip files.zip
+    - pkg install -y curl
+    - curl -o files.txz http://${CIRRUS_HTTP_CACHE_HOST}/files.txz
+    - tar -xzf files.txz
     - ls -l
     - cat files/foo
