@@ -2,8 +2,10 @@ freebsd_instance:
   image_family: freebsd-13-0
 
 first_task:
+  use_compute_credits: $CIRRUS_USER_COLLABORATOR == 'true'
   foo_script: echo foobar > foo
 second_task:
+  use_compute_credits: $CIRRUS_USER_COLLABORATOR == 'true'
   depends_on:
     - first
   foo2_script: cat foo
