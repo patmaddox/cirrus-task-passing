@@ -1,0 +1,9 @@
+freebsd_instance:
+  image_family: freebsd-13-0
+
+first_task:
+  foo_script: echo foobar > foo
+second_task:
+  depends_on:
+    - first
+  foo2_script: cat foo
