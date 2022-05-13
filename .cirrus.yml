@@ -3,9 +3,15 @@ freebsd_instance:
 
 first_task:
   use_compute_credits: $CIRRUS_USER_COLLABORATOR == 'true'
-  foo_script: echo foobar > foo
+  files_cache:
+    folder: files
+  foo_script:
+    - mkdir files
+    - echo foobar > files/foo
 second_task:
   use_compute_credits: $CIRRUS_USER_COLLABORATOR == 'true'
+  files_cache:
+    folder: files
   depends_on:
     - first
-  foo2_script: cat foo
+  foo2_script: cat files/foo
