@@ -3,12 +3,12 @@ freebsd_instance:
 
 first_task:
   use_compute_credits: $CIRRUS_USER_COLLABORATOR == 'true'
-  files_artifacts:
-    path: "files/*"
   foo_script:
     - mkdir files
     - echo foobar > files/foo
     - echo froofroo > files/bar
+  files_artifacts:
+    path: "files/*"
 second_task:
   use_compute_credits: $CIRRUS_USER_COLLABORATOR == 'true'
   depends_on:
